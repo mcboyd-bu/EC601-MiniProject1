@@ -9,11 +9,9 @@ Version 1 of our product will only include information about a select list of sh
 
 ## User Stories
 
-1. I, as Netfix, would like to know how excited the public is for an upcoming original show based on Tweet sentiment about its Handle or Hashtag in a range from X->Y (TBD) as an average of a random selection of 20 daily Tweets over 10 days before the show release
+1. I, as Netflix, would like to know recent ("current") public sentiment about an original show based on Tweet sentiment in a range from X-Y as an average of 100 mixed (recent and popular) Tweets.
 
-2. I, as Netflix, would like to know how much the public enjoyed an original show based on Tweet sentiment after the show is released in a range from X->Y (TBD) as an average of a random selection of 20 daily Tweets over 10 days after the show is released
-
-3. I, as a Netflix watcher, would like to know how a Netflix original show is perceived based on Tweet sentiment as either "Thumbs Up" or "Thumbs Down" before I watch it (based on an average of a random selection of 20 daily Tweets over 10 days after the show is released)
+2. I, as a Netflix watcher, would like to know current public rating about an original Netflix show based on Tweet sentiment in a range from 1 star (bad) to 5 stars (really good) as an average of 100 mixed (recent and popular) Tweets.
 
 ## Architecture Needed
 
