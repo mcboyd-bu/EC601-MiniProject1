@@ -12,7 +12,7 @@ Team 3 - Matthew Boyd, Chenhui "Elvis" Zhu
 
 <a name="product-mission"/>
 
-## [Product Mission](#product-mission)
+## Product Mission
 
 Provide Netflix show creators/producers, and the watching public, Tweet sentiment about current Netflix original content.
 Version 1 of our product will only include information about a select list of shows and seasons.
