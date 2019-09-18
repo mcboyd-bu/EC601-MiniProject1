@@ -1,10 +1,19 @@
 import GoogleNatLangAPI as GNL
 import plotly.graph_objects as go
 import time
+from twitter_api import Get_twitter
 
 #g = raw_input("Enter your name : ")  # Python 2.x Version
 g = input("Enter your name : ")  # Python 3.x version
 print(g)
+
+tag = input("Enter the hashtag : ")
+print(tag)
+
+time = input("Enter the time in the form of YYYY-MM-DD : ")
+print(time)
+
+print(Get_twitter(tag,time))
 
 #fig = go.Figure(data=go.Bar(y=[2, 3, 1]))
 #fig.write_html('first_figure.html', auto_open=True)
