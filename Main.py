@@ -1,22 +1,49 @@
 import GoogleNatLangAPI as GNL
-import plotly.graph_objects as go
+import BusinessLogic as BL
 import time
 from twitter_api import Get_twitter
 
-#g = raw_input("Enter your name : ")  # Python 2.x Version
-g = input("Enter your name : ")  # Python 3.x version
-print(g)
+userType = ""
+userInput = 0
+twitterInput = ""
+twitterLookup = ""
 
-tag = input("Enter the hashtag : ")
-print(tag)
+print("** Netflix original content sentiment analyzer **")
+print("There are 2 types of users: Netflix and Watcher")
+print("(1) Netflix: for Netflix employees looking for a raw sentiment score (scale of 1-100)")
+print("(2) Watcher: for Netflix viewers looking for show ratings (scale of 1-5 stars)")
 
-time = input("Enter the time in the form of YYYY-MM-DD : ")
-print(time)
+#g = raw_input("Enter your user type (1 or 2) : ")  # Python 2.x Version
+userInput = input("Enter your user type (1 or 2) : ")  # Python 3.x version
+if (userInput == "1") userType = "Netflix"
+if (userInput == "2") userType = "Watcher"
+print(userInput)
+print(userType)
+print("List of show #hashtags and @handles allowed: ...")
 
-print(Get_twitter(tag,time))
+while(true):
+    twitterInput = input("Enter the #hashtag or @handle you want to lookup (include the # or @): ")
+    # call function below to validate input and check it's a valid entry
+    twitterLookup = InputValidation(twitterInput)
+    print(twitterInput)
+    print(twitterLookup)
+    if(twitterLookup != "invalid"):
+        print(Get_twitter(tag))
+    else:
+        print("Invalid entry, please enter a #hashtag or @handle from the list above, including the # or @.")
 
-#fig = go.Figure(data=go.Bar(y=[2, 3, 1]))
-#fig.write_html('first_figure.html', auto_open=True)
+    # time = input("Enter the time in the form of YYYY-MM-DD : ")
+    # print(time)
+
+
+
+def InputValidation(t):
+    results = "invalid"
+    # check for # / @ in first position
+    # check value against list of known-good values
+    # bad value, return "invalid"
+    return results
+
 #test = GNL.GetSentiment('Hello world, this is a test')
 #print(test)
 
