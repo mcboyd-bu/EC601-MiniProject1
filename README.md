@@ -38,13 +38,17 @@ Version 1 will also prompt for user type on initial execution; final product wou
 
 ## Run Program
 
+*Assumes __Google Natural Language API__ and __Tweepy__ packages already installed.*
+*Assumes __Twitter API Security Keys__ available and __Google NLAPI JSON file__ available.*
+
 1. Copy code locally
 2. Add Twitter API credentials to local "twitter_api.py" file and save
 3. Open terminal/command window and navigate to folder
-4. Run "python Main.py"
-5. Enter "user type" as prompted (cannot change this without restarting program)
-6. Enter show "@" handle or "#" hashtag
-7. Exit using "Ctrl-C" (or equivalent code interruption key combination for your platform)
+4. Run platform-specific command to point program to Google NLAPI JSON file
+5. Run "python Main.py"
+6. Enter "user type" as prompted (cannot change this without restarting program)
+7. Enter show "@" handle or "#" hashtag
+8. Exit using "Ctrl-C" (or equivalent code-interruption key combination for your platform)
 
 <a name="code-flowchart"/>
 
