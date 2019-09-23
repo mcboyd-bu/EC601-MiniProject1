@@ -1,24 +1,78 @@
 import GoogleNatLangAPI as GNL
-import plotly.graph_objects as go
+#import BusinessLogic as BL  ##TEST - uncomment for production
+import Progress as PR
 import time
 from twitter_api import Get_twitter
 
-#g = raw_input("Enter your name : ")  # Python 2.x Version
-g = input("Enter your name : ")  # Python 3.x version
-print(g)
+try:  # Code to allow cross-compatible input for both Python 2.x and 3.x; from http://python3porting.com/differences.html?highlight=input
+    input = raw_input
+except NameError:
+    pass
 
-tag = input("Enter the hashtag : ")
-print(tag)
+# Variables #
+userType = ""
+userInput = 0
+twitterInput = ""
+twitterLookup = ""
+gnlaResults = []
+calcScoreResults = 0.0
+userResults = ""
+knownGood = ["#TheCrown","#BlackMirror","#Unbelievable","#TopBoy","#StrangerThings","#MindHunter"]
+twitterResults = ["Hello world", "This is a very, VERY good idea for an example sentence. I love it!"]  ##TEST - remove for production
 
-time = input("Enter the time in the form of YYYY-MM-DD : ")
-print(time)
+# Function to validate user input as a valid, well-known # or @ #
+def InputValidation(t):
+    results = "valid"
+    # First, check for # / @ in first position
+    if t[0:1] != "@" and t[0:1] != "#": results = "invalid"  # bad value, return "invalid"
+    # Then, check value against list of known-good values
+    if t not in knownGood: results = "invalid"  # bad value, return "invalid"
+    return results
 
-print(Get_twitter(tag,time))
+print("** Netflix original content sentiment analyzer **")
+print("-------------------------------------------------")
+print("There are 2 types of users: Netflix and Watcher")
+print("(1) Netflix: for Netflix employees looking for a raw sentiment score (scale of 1-100)")
+print("(2) Watcher: for Netflix viewers looking for show ratings (scale of 1-5 stars)")
 
-#fig = go.Figure(data=go.Bar(y=[2, 3, 1]))
-#fig.write_html('first_figure.html', auto_open=True)
-#test = GNL.GetSentiment('Hello world, this is a test')
-#print(test)
+#g = raw_input("Enter your user type (1 or 2) : ")  # Python 2.x Version
+userInput = input("\nEnter your user type (1 or 2) : ")  # Python 3.x version
+if userInput == "1": userType = "Netflix"
+if userInput == "2": userType = "Consumer"
+
+print("\nList of show #hashtags and @handles allowed: ")
+print("----------------------------------------------")
+print("{}, {}".format(", ".join(knownGood[:-1]), knownGood[-1]))
+
+while(True):
+    twitterInput = input("\nEnter the #hashtag or @handle you want to lookup (include the # or @): ")
+    twitterLookup = InputValidation(twitterInput)  # Call function to validate input and check it's a valid entry
+    if(twitterLookup != "invalid"):
+        progTotal = 103  # Total number of items to be completed for the Progress Bar; assumes 100 tweets returned...
+        i = 1  # Initialize Progress Bar counter
+        PR.progress(i, progTotal, status='Collecting Tweets...')  # First iteration of Progress Bar (indicating start of all tasks)
+        #twitterResults = Get_twitter(twitterLookup)  # Get Tweets based on input # / @
+        time.sleep(1) ##TEST - remove for production and uncomment above line
+        i += 1  # Iterate Progress Bar counter
+        totalTweets = len(twitterResults)  # Get count of Tweets returned
+        if totalTweets == 0:
+            PR.progress(progTotal, progTotal, status='Collecting Tweets...')  # Close out Progress Bar
+            print("\n!! NO TWEETS RETURNED !! Please enter another #hashtag or @handle from the list above, including the # or @.")
+        else:
+            j = 0
+            while j < totalTweets:  # Continue to iterate Progress Bar while getting Tweet sentiments
+                PR.progress(i, progTotal, status='Analyzing Tweets...')
+                gnlaResults.append(GNL.GetSentiment(twitterResults[j]))
+                #time.sleep(0.1)  # emulating long-playing job
+                i += 1
+                j += 1
+            #calcScoreResults = BL.CalcScore(gnlaResults)  # Send sentiment scores array to Business Logic unit for calculations; get float back
+            #userResults = BL.UserScore(userType, calcScoreResults)  # Send sentiment scores float to Business Logic unit to calculate score to return to user
+            PR.progress(progTotal, progTotal, status='Analyzing Tweets...')  # Close out Progress Bar
+            print("Results for %s: %s", twitterInput, userResults)
+            # print(gnlaResults)
+    else:
+        print("!! Invalid entry !! Please enter a #hashtag or @handle from the list above, including the # or @.")
 
 
 # Outline of steps:
@@ -27,15 +81,8 @@ print(Get_twitter(tag,time))
 # 2. Call Twitter API to get back list of tweets in timeframes
 #   - How do we know date of release for show to set timeframes? Ask for that as well?
 #   - Return tweet text results stripped out of JSON API result as array of strings (or save to local file?)
-# NO MORE 3. Call function to (randomly) extract a subset of the tweets for analysis (certain number per day, maybe?)
-# NO MORE	- Return as array/text file
-# 4. Call Google API to analyze each tweet in subset
+# 3. Call Google API to analyze each tweet in subset
 #	- Return sentiment and magnitude
 #	- Store returned values in array/object
-# 5. Call function to convert sentiments and magnitudes into overall daily sentiment values
-# 6. Display results
-# NO MORE 6. Call library to plot chart of daily values
-# NO MORE	- Plotly: https://plot.ly/python/getting-started/
-#
-# ! Probably use ProgressBar2 to display progress for user as the many above tasks are happening...
-# ! https://pypi.org/project/progressbar2/
+# 4. Call function to convert sentiments and magnitudes into overall sentiment values
+# 5. Display results
