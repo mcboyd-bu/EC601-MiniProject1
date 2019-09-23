@@ -10,10 +10,10 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 
-def Get_twitter(hashtag, time):
-    tag = '#' + hashtag + ' -filter:retweets'
+def Get_twitter(hashtag):#the input should be in the form of #xx or @xx
+    tag = hashtag + ' -filter:retweets'
     text = []
-    for tweet in tweepy.Cursor(api.search, q=tag, tweet_mode='extended', lang='en',until=time).items(30):
+    for tweet in tweepy.Cursor(api.search, q=tag, tweet_mode='extended', lang='en').items(100):
         text.append(tweet.full_text)
     return text
 
