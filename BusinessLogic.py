@@ -1,13 +1,22 @@
 import math
 
-def CalcScore(sentiment, magnitude):#get the average score
+def CalcScore(sentiment):#get the average score
     count = len(sentiment)
     i = 0
     avg = 0
+    avgCount = 0
     while i < count:
-        avg += sentiment[i]*magnitude[i]
+        mag = sentiment[i][1]
+        if mag < 1.45: mag = 1
+        elif mag < 2.45: mag = 2
+        elif mag < 3.45: mag = 3
+        elif mag < 4.45: mag = 4
+        else: mag = 5
+        print(mag)
+        avg += sentiment[i][0]*mag
+        avgCount += mag
         i += 1
-    avg = avg/count
+    avg = avg/avgCount
 
     return avg
 
