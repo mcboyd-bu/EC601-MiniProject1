@@ -17,7 +17,7 @@ twitterLookup = ""
 gnlaResults = []
 calcScoreResults = 0.0
 userResults = ""
-knownGood = ["#TheCrown","#BlackMirror","#Unbelievable","#TopBoy","#StrangerThings","#MindHunter"]
+knownGood = ["#TheCrown","#BlackMirror","#Unbelievable","#TopBoy","#StrangerThings","#MindHunter","@Stranger_Things","@blackmirror","@disenchantment","@WhenTheySeeUs","@darkcrystal","@TheCrownNetflix"]
 twitterResults = ["Hello world", "This is a very, VERY good idea for an example sentence. I love it!"]  ##TEST - remove for production
 
 # Function to validate user input as a valid, well-known # or @ #
@@ -35,8 +35,7 @@ print("There are 2 types of users: Netflix and Watcher")
 print("(1) Netflix: for Netflix employees looking for a raw sentiment score (scale of 1-100)")
 print("(2) Watcher: for Netflix viewers looking for show ratings (scale of 1-5 stars)")
 
-#g = raw_input("Enter your user type (1 or 2) : ")  # Python 2.x Version
-userInput = input("\nEnter your user type (1 or 2) : ")  # Python 3.x version
+userInput = input("\nEnter your user type (1 or 2) : ")
 if userInput == "1": userType = "Netflix"
 if userInput == "2": userType = "Consumer"
 
