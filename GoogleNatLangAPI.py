@@ -3,6 +3,10 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 import sys
+import re
+from nltk.tokenize import WordPunctTokenizer
+
+# Unicode-encode the text, for both Python 2.x and 3.x
 if sys.version_info < (3,):
     import codecs
     def u(x):
@@ -14,9 +18,22 @@ else:
 # Instantiates a client
 client = language.LanguageServiceClient()
 
+# Clean the tweet text before analyzing it - borrowed from https://www.freecodecamp.org/news/how-to-make-your-own-sentiment-analyzer-using-python-and-googles-natural-language-api-9e91e1c493e/
+def clean_tweet(tweet):
+    user_removed = re.sub(r'@[A-Za-z0-9]+','',tweet.decode('utf-8'))
+    link_removed = re.sub('https?://[A-Za-z0-9./]+','',user_removed)
+    number_removed = re.sub('[^a-zA-Z]', ' ', link_removed)
+    lower_case_tweet= number_removed.lower()
+    tok = WordPunctTokenizer()
+    words = tok.tokenize(lower_case_tweet)
+    clean_tweet = (' '.join(words)).strip()
+    return clean_tweet
+
 def GetSentiment(t):   # Return sentiment of submitted text
-    # Convert submitted text to unicode (required by API)
-    text = u(t)
+    # Clean submitted text
+    clean_t = clean_tweet(t)
+    # Convert cleaned text to unicode (required by API)
+    text = u(clean_t)
     result = []
     # The text to analyze
     document = types.Document(

@@ -15,16 +15,16 @@ Team 3 - Matthew Boyd, Chenhui "Elvis" Zhu
 ## Product Mission
 
 Provide Netflix show creators/producers, and the watching public, Tweet sentiment about current Netflix original content.
-Version 1 of our product will only include information about a select list of shows and seasons.
-Version 1 will also prompt for user type on initial execution; final product would have separate entry points for the 2 types of users.
+* Version 1 of our product will only include information about a select list of shows and seasons.
+* Version 1 will also prompt for user type on initial execution; final product would have separate entry points for the 2 types of users.
 
 <a name="user-stories"/>
 
 ## User Stories
 
-1. I, as Netflix, would like to know recent ("current") public sentiment about an original show based on Tweet sentiment in a range from X-Y as an average of 100 mixed (recent and popular) Tweets.
+1. I, as Netflix, would like to know recent ("current") public sentiment about an original show based on Tweet sentiment in a range from 1-100 as an average of 100 mixed (recent and popular) Tweets.
 
-2. I, as a Netflix watcher, would like to know current public rating about an original Netflix show based on Tweet sentiment in a range from 1 star (bad) to 5 stars (really good) as an average of 100 mixed (recent and popular) Tweets.
+2. I, as a Netflix watcher, would like to know current public rating for an original Netflix show based on Tweet sentiment in a range from 1 star (bad) to 5 stars (really good) as an average of 100 mixed (recent and popular) Tweets.
 
 <a name="architecture-needed"/>
 
@@ -42,13 +42,14 @@ Version 1 will also prompt for user type on initial execution; final product wou
 *Assumes __Twitter API Security Keys__ available and __Google NLAPI JSON file__ available.*
 
 1. Copy code locally
-2. Add Twitter API credentials to local "twitter_api.py" file and save
-3. Open terminal/command window and navigate to folder
-4. Run platform-specific command to point program to Google NLAPI JSON file
-5. Run "python Main.py"
-6. Enter "user type" as prompted (cannot change this without restarting program)
-7. Enter show "@" handle or "#" hashtag
-8. Exit using "Ctrl-C" (or equivalent code-interruption key combination for your platform)
+2. Ensure the following Python packages are installed: Google Natural Language API and Tweepy
+3. Add Twitter API credentials to local "twitter_api.py" file and save
+4. Open terminal/command window and navigate to folder where code was downloaded
+5. Run platform-specific command to point program to Google NLAPI JSON file
+6. Run "python Main.py"
+7. Enter "user type" as prompted (cannot change this without restarting program)
+8. Enter show "@" handle or "#" hashtag
+9. Exit using "Ctrl-C" (or equivalent code-interruption key combination for your platform)
 
 <a name="code-flowchart"/>
 
