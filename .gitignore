@@ -103,3 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 EC601-265ce8f58a2c.json
+
+config.py
+__pycache__
+.ipynb_checkpoints
