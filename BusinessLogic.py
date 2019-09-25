@@ -14,7 +14,6 @@ def CalcScore(sentiment):#get the average score of the sentiment
         elif mag < 3.45: mag = 3
         elif mag < 4.45: mag = 4
         else: mag = 5
-        print(mag)
 
         avg += sentiment[i][0]*mag
         avgCount += mag

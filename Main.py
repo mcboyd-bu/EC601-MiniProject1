@@ -1,5 +1,5 @@
 import GoogleNatLangAPI as GNL
-#import BusinessLogic as BL  ##TEST - uncomment for production
+import BusinessLogic as BL
 import Progress as PR
 import time
 from twitter_api import Get_twitter
@@ -15,10 +15,10 @@ userInput = 0
 twitterInput = ""
 twitterLookup = ""
 gnlaResults = []
+debugAllValues = []
 calcScoreResults = 0.0
 userResults = ""
 knownGood = ["#TheCrown","#BlackMirror","#Unbelievable","#TopBoy","#StrangerThings","#MindHunter","@Stranger_Things","@blackmirror","@disenchantment","@WhenTheySeeUs","@darkcrystal","@TheCrownNetflix"]
-twitterResults = ["Hello world", "This is a very, VERY good idea for an example sentence. I love it!"]  ##TEST - remove for production
 
 # Function to validate user input as a valid, well-known # or @ #
 def InputValidation(t):
@@ -50,8 +50,8 @@ while(True):
         progTotal = 103  # Total number of items to be completed for the Progress Bar; assumes 100 tweets returned...
         i = 1  # Initialize Progress Bar counter
         PR.progress(i, progTotal, status='Collecting Tweets...')  # First iteration of Progress Bar (indicating start of all tasks)
-        #twitterResults = Get_twitter(twitterLookup)  # Get Tweets based on input # / @
-        time.sleep(1) ##TEST - remove for production and uncomment above line
+        twitterResults = Get_twitter(twitterInput)  # Get Tweets based on input # / @
+        #twitterResults = ["test","test","test","test","test","test","test","test","test","test"]
         i += 1  # Iterate Progress Bar counter
         totalTweets = len(twitterResults)  # Get count of Tweets returned
         if totalTweets == 0:
@@ -61,15 +61,25 @@ while(True):
             j = 0
             while j < totalTweets:  # Continue to iterate Progress Bar while getting Tweet sentiments
                 PR.progress(i, progTotal, status='Analyzing Tweets...')
-                gnlaResults.append(GNL.GetSentiment(twitterResults[j]))
-                #time.sleep(0.1)  # emulating long-playing job
+                time.sleep(0.1)
+                gnlaReturn = GNL.GetSentiment(twitterResults[j])
+                debugAllValues.append(gnlaReturn[:])
+                del gnlaReturn[0]
+                del gnlaReturn[0]
+                gnlaResults.append(gnlaReturn[:])
+                #gnlaResults.append(GNL.GetSentiment(twitterResults[j]))
                 i += 1
                 j += 1
-            #calcScoreResults = BL.CalcScore(gnlaResults)  # Send sentiment scores array to Business Logic unit for calculations; get float back
-            #userResults = BL.UserScore(userType, calcScoreResults)  # Send sentiment scores float to Business Logic unit to calculate score to return to user
+            calcScoreResults = BL.CalcScore(gnlaResults)  # Send sentiment scores array to Business Logic unit for calculations; get float back
+            userResults = BL.UserScore(userType, calcScoreResults)  # Send sentiment scores float to Business Logic unit to calculate score to return to user
             PR.progress(progTotal, progTotal, status='Analyzing Tweets...')  # Close out Progress Bar
-            print("Results for %s: %s", twitterInput, userResults)
-            # print(gnlaResults)
+            print("\nResults for {}: {}".format(twitterInput, userResults))
+            #print("DEBUG:")
+            #print(debugAllValues)
+            import csv
+            with open("test.csv", 'w', encoding='utf-8') as f:
+               writer = csv.writer(f, delimiter=',')
+               writer.writerows(debugAllValues)  #considering debugAllValues is a list of lists.
     else:
         print("!! Invalid entry !! Please enter a #hashtag or @handle from the list above, including the # or @.")
 
