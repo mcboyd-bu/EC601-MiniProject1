@@ -39,7 +39,9 @@ Provide Netflix show creators/producers, and the watching public, Tweet sentimen
 ## Run Program
 
 *Assumes __Google Natural Language API__, __Tweepy__, and __NLTK__ packages already installed.*
+
 *Assumes __Twitter API Security Keys__ available and __Google NLAPI JSON file__ available.*
+
 *Requires __Python 3.x__ to run!*
 
 1. Copy code locally
