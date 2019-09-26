@@ -89,6 +89,12 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env2
+.env3
+env2/
+env3/
+env2.bak
+env3.bak
 
 # Spyder project settings
 .spyderproject
@@ -103,3 +109,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 EC601-265ce8f58a2c.json
+
+config.py
+__pycache__
+.ipynb_checkpoints

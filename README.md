@@ -38,12 +38,19 @@ Provide Netflix show creators/producers, and the watching public, Tweet sentimen
 
 ## Run Program
 
-*Assumes __Google Natural Language API__ and __Tweepy__ packages already installed.*
+*Assumes __Google Natural Language API__, __Tweepy__, and __NLTK__ packages already installed.*
 *Assumes __Twitter API Security Keys__ available and __Google NLAPI JSON file__ available.*
+*Requires __Python 3.x__ to run!*
 
 1. Copy code locally
-2. Ensure the following Python packages are installed: Google Natural Language API and Tweepy
-3. Add Twitter API credentials to local "twitter_api.py" file and save
+2. Ensure the following Python packages are installed: Google Natural Language API, Tweepy, NLTK
+3. Add Twitter API credentials to local "config.py" file and save:
+   ```python
+   consumer_key = "[key]"
+   consumer_secret = "[key]"
+   access_token = "[key]"
+   access_token_secret = "[key]"
+   ```
 4. Open terminal/command window and navigate to folder where code was downloaded
 5. Run platform-specific command to point program to Google NLAPI JSON file
 6. Run "python Main.py"

@@ -1,8 +1,9 @@
-import GoogleNatLangAPI as GNL
-#import BusinessLogic as BL  ##TEST - uncomment for production
-import Progress as PR
+import modules.GoogleNatLangAPI as GNL
+import modules.BusinessLogic as BL
+import modules.Progress as PR
 import time
-from twitter_api import Get_twitter
+import csv
+from modules.twitter_api import Get_twitter
 
 try:  # Code to allow cross-compatible input for both Python 2.x and 3.x; from http://python3porting.com/differences.html?highlight=input
     input = raw_input
@@ -15,10 +16,10 @@ userInput = 0
 twitterInput = ""
 twitterLookup = ""
 gnlaResults = []
+debugAllValues = []
 calcScoreResults = 0.0
 userResults = ""
 knownGood = ["#TheCrown","#BlackMirror","#Unbelievable","#TopBoy","#StrangerThings","#MindHunter","@Stranger_Things","@blackmirror","@disenchantment","@WhenTheySeeUs","@darkcrystal","@TheCrownNetflix"]
-twitterResults = ["Hello world", "This is a very, VERY good idea for an example sentence. I love it!"]  ##TEST - remove for production
 
 # Function to validate user input as a valid, well-known # or @ #
 def InputValidation(t):
@@ -50,38 +51,34 @@ while(True):
         progTotal = 103  # Total number of items to be completed for the Progress Bar; assumes 100 tweets returned...
         i = 1  # Initialize Progress Bar counter
         PR.progress(i, progTotal, status='Collecting Tweets...')  # First iteration of Progress Bar (indicating start of all tasks)
-        #twitterResults = Get_twitter(twitterLookup)  # Get Tweets based on input # / @
-        time.sleep(1) ##TEST - remove for production and uncomment above line
+        twitterResults = Get_twitter(twitterInput)  # Get Tweets based on input # / @
+        #twitterResults = ["test","test","test","test","test","test","test","test","test","test"]
         i += 1  # Iterate Progress Bar counter
         totalTweets = len(twitterResults)  # Get count of Tweets returned
         if totalTweets == 0:
             PR.progress(progTotal, progTotal, status='Collecting Tweets...')  # Close out Progress Bar
             print("\n!! NO TWEETS RETURNED !! Please enter another #hashtag or @handle from the list above, including the # or @.")
         else:
+            # with open("tweets.txt", 'w', encoding='utf-8') as f:
+            #    for item in twitterResults:
+            #        f.write("%s\n" % item)  #twitterResults is just a list.
             j = 0
             while j < totalTweets:  # Continue to iterate Progress Bar while getting Tweet sentiments
                 PR.progress(i, progTotal, status='Analyzing Tweets...')
-                gnlaResults.append(GNL.GetSentiment(twitterResults[j]))
-                #time.sleep(0.1)  # emulating long-playing job
+                gnlaReturn = GNL.GetSentiment(twitterResults[j])
+                debugAllValues.append(gnlaReturn[:])
+                del gnlaReturn[0]
+                del gnlaReturn[0]
+                gnlaResults.append(gnlaReturn[:])
                 i += 1
                 j += 1
-            #calcScoreResults = BL.CalcScore(gnlaResults)  # Send sentiment scores array to Business Logic unit for calculations; get float back
-            #userResults = BL.UserScore(userType, calcScoreResults)  # Send sentiment scores float to Business Logic unit to calculate score to return to user
+            calcScoreResults = BL.CalcScore(gnlaResults)  # Send sentiment scores array to Business Logic unit for calculations; get float back
+            userResults = BL.UserScore(userType, calcScoreResults)  # Send sentiment scores float to Business Logic unit to calculate score to return to user
             PR.progress(progTotal, progTotal, status='Analyzing Tweets...')  # Close out Progress Bar
-            print("Results for %s: %s", twitterInput, userResults)
-            # print(gnlaResults)
+            print("\nResults for {}: {}".format(twitterInput, userResults))
+
+            # with open("test.csv", 'w', encoding='utf-8') as f:
+            #    writer = csv.writer(f, delimiter=',')
+            #    writer.writerows(debugAllValues)  #considering debugAllValues is a list of lists.
     else:
         print("!! Invalid entry !! Please enter a #hashtag or @handle from the list above, including the # or @.")
-
-
-# Outline of steps:
-# 0. Ask for user type (Netflix or watcher)
-# 1. Ask user for # or @ to look-up
-# 2. Call Twitter API to get back list of tweets in timeframes
-#   - How do we know date of release for show to set timeframes? Ask for that as well?
-#   - Return tweet text results stripped out of JSON API result as array of strings (or save to local file?)
-# 3. Call Google API to analyze each tweet in subset
-#	- Return sentiment and magnitude
-#	- Store returned values in array/object
-# 4. Call function to convert sentiments and magnitudes into overall sentiment values
-# 5. Display results
