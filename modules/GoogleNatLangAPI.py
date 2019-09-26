@@ -33,14 +33,16 @@ def clean_tweet(tweet):
 
 def GetSentiment(t):   # Return sentiment of submitted text
     # Clean submitted text
-    clean_t = clean_tweet(t)
+    t1 = u(t)
+    clean_t = clean_tweet(t1)
     # Convert cleaned text to unicode (required by API)
     text = u(clean_t)
     result = []
     # The text to analyze
     document = types.Document(
         content=text,
-        type=enums.Document.Type.PLAIN_TEXT)
+        type=enums.Document.Type.PLAIN_TEXT,
+        language='en')
     # Detects the sentiment of the text
     sentiment = client.analyze_sentiment(document=document).document_sentiment
     #result = '{}, {}'.format(sentiment.score, sentiment.magnitude)
