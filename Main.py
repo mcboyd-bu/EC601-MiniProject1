@@ -1,8 +1,6 @@
 import modules.GoogleNatLangAPI as GNL
 import modules.BusinessLogic as BL
 import modules.Progress as PR
-import time
-import csv
 from modules.twitter_api import Get_twitter
 
 try:  # Code to allow cross-compatible input for both Python 2.x and 3.x; from http://python3porting.com/differences.html?highlight=input
@@ -44,6 +42,7 @@ print("\nList of show #hashtags and @handles allowed: ")
 print("----------------------------------------------")
 print("{}, {}".format(", ".join(knownGood[:-1]), knownGood[-1]))
 
+# Main loop to receive user input and return results (changing user type not supported at this time)
 while(True):
     twitterInput = input("\nEnter the #hashtag or @handle you want to lookup (include the # or @): ")
     twitterLookup = InputValidation(twitterInput)  # Call function to validate input and check it's a valid entry
@@ -51,34 +50,28 @@ while(True):
         progTotal = 103  # Total number of items to be completed for the Progress Bar; assumes 100 tweets returned...
         i = 1  # Initialize Progress Bar counter
         PR.progress(i, progTotal, status='Collecting Tweets...')  # First iteration of Progress Bar (indicating start of all tasks)
-        twitterResults = Get_twitter(twitterInput)  # Get Tweets based on input # / @
-        #twitterResults = ["test","test","test","test","test","test","test","test","test","test"]
-        i += 1  # Iterate Progress Bar counter
+        twitterResults = Get_twitter(twitterInput)  # Get Tweets based on input # or @
+        i += 1  # Iterate Progress Bar counter (first step of getting tweets complete)
         totalTweets = len(twitterResults)  # Get count of Tweets returned
         if totalTweets == 0:
             PR.progress(progTotal, progTotal, status='Collecting Tweets...')  # Close out Progress Bar
             print("\n!! NO TWEETS RETURNED !! Please enter another #hashtag or @handle from the list above, including the # or @.")
         else:
-            # with open("tweets.txt", 'w', encoding='utf-8') as f:
-            #    for item in twitterResults:
-            #        f.write("%s\n" % item)  #twitterResults is just a list.
             j = 0
-            while j < totalTweets:  # Continue to iterate Progress Bar while getting Tweet sentiments
-                PR.progress(i, progTotal, status='Analyzing Tweets...')
-                gnlaReturn = GNL.GetSentiment(twitterResults[j])
-                debugAllValues.append(gnlaReturn[:])
-                del gnlaReturn[0]
-                del gnlaReturn[0]
-                gnlaResults.append(gnlaReturn[:])
+            # Iterate through tweets and get sentiments
+            while j < totalTweets:
+                PR.progress(i, progTotal, status='Analyzing Tweets...')  # Continue to iterate Progress Bar while getting Tweet sentiments
+                gnlaReturn = GNL.GetSentiment(twitterResults[j])  # Returns original tweet text, cleaned tweet text, sentiment, and magnitude from Google API
+                debugAllValues.append(gnlaReturn[:])  # Holds all returned values for potential debugging
+                del gnlaReturn[0]  # Remove original Tweet text from returned results
+                del gnlaReturn[0]  # Remove cleaned Tweet text from returned results
+                gnlaResults.append(gnlaReturn[:])  # Add sentiment and magnitude to array of sentiments and magnitudes for this set of Tweets
                 i += 1
                 j += 1
             calcScoreResults = BL.CalcScore(gnlaResults)  # Send sentiment scores array to Business Logic unit for calculations; get float back
-            userResults = BL.UserScore(userType, calcScoreResults)  # Send sentiment scores float to Business Logic unit to calculate score to return to user
+            userResults = BL.UserScore(userType, calcScoreResults)  # Send sentiment scores float to Business Logic unit to calculate user score to return to user
             PR.progress(progTotal, progTotal, status='Analyzing Tweets...')  # Close out Progress Bar
-            print("\nResults for {}: {}".format(twitterInput, userResults))
+            print("\nResults for {}: {}".format(twitterInput, userResults))  # Print results fro user and prompt for another input
 
-            # with open("test.csv", 'w', encoding='utf-8') as f:
-            #    writer = csv.writer(f, delimiter=',')
-            #    writer.writerows(debugAllValues)  #considering debugAllValues is a list of lists.
     else:
         print("!! Invalid entry !! Please enter a #hashtag or @handle from the list above, including the # or @.")
