@@ -75,13 +75,13 @@ Provide Netflix show creators/producers, and the watching public, Tweet sentimen
 1.	For Netflix watcher:
 I, as a Netflix watcher, want to know whether the Netflix new show called Stranger Things is worth watching. I would like to use the product to know the current public rating for the show based on the Tweet sentiment in a range from 1 star to 5 stars.
 
-<img src="img/TestCase1.png">
+<img src="img/TestCase1.png">  
 
 
 2.	For Netflix:
 I, as Netflix, want to see the public rating for the latest show called Top Boy based on the Tweet sentiment in range of 1-100. This rating system helps me get public feedback faster and more efficiently.
 
-<img src="img/TestCase2.png">
+<img src="img/TestCase2.png">  
  
 
 <a name="lessons-learned"/>
