@@ -24,14 +24,13 @@ def clean_tweet(tweet):
         tweet = tweet.decode('utf-8')
     user_removed = re.sub(r'@[A-Za-z0-9]+','',tweet)
     link_removed = re.sub('https?://[A-Za-z0-9./]+','',user_removed)
-    #number_removed = re.sub('[^a-zA-Z]', ' ', link_removed)
     lower_case_tweet= link_removed.lower()
     tok = TweetTokenizer()
     words = tok.tokenize(lower_case_tweet)
     clean_tweet = (' '.join(words)).strip()
     return clean_tweet
 
-def GetSentiment(t):   # Return sentiment of submitted text
+def GetSentiment(t):   # Returns sentiment of submitted text
     # Clean submitted text
     t1 = u(t)
     clean_t = clean_tweet(t1)
@@ -45,21 +44,9 @@ def GetSentiment(t):   # Return sentiment of submitted text
         language='en')
     # Detects the sentiment of the text
     sentiment = client.analyze_sentiment(document=document).document_sentiment
-    #result = '{}, {}'.format(sentiment.score, sentiment.magnitude)
+    # Build array to return original Tweet text, cleaned Tweet text, sentiment, and magnitude
     result.append(t)
     result.append(clean_t)
     result.append(sentiment.score)
     result.append(sentiment.magnitude)
     return result
-
-# The text to analyze
-#text = u'Hello, world!'
-#document = types.Document(
-#    content=text,
-#    type=enums.Document.Type.PLAIN_TEXT)
-
-# Detects the sentiment of the text
-#sentiment = client.analyze_sentiment(document=document).document_sentiment
-
-#print('Text: {}'.format(text))
-#print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))

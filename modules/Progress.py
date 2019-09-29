@@ -1,3 +1,4 @@
+# Shows text-based progress bar in the terminal while Tweets are ebing collected and analyzed
 import sys
 
 # From https://gist.github.com/vladignatyev/06860ec2040cb497f0f3
